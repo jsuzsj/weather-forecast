@@ -2,9 +2,12 @@ package com.earthchen.spring.cloud.weather.service.impl;
 
 import com.earthchen.spring.cloud.weather.service.WeatherDataService;
 import com.earthchen.spring.cloud.weather.util.HttpClientUtil;
+import com.earthchen.spring.cloud.weather.vo.City;
+import com.earthchen.spring.cloud.weather.vo.CityList;
 import com.earthchen.spring.cloud.weather.vo.WeatherResponse;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +36,7 @@ public class WeatherDataServiceImpl implements WeatherDataService {
     /**
      * 过期时间
      */
-    private static final long TIME_OUT = 1800L; // 1800s
+    private static final long TIME_OUT = 0L; // 1800s
 
     @Autowired
     private RestTemplate restTemplate;
@@ -44,20 +47,42 @@ public class WeatherDataServiceImpl implements WeatherDataService {
 
     @Override
     public WeatherResponse getDataByCityId(String cityId) {
-        String uri = WEATHER_URI + "citykey=" + cityId;
-        return this.doGetWeather(uri);
+        int flag = 0;
+        List<City> cityList = CityList.getInstance();
+        for(City c : cityList){
+            if(c.getCityId().equals(cityId)){
+                flag = 1;
+                break;
+            }
+        }
+        if(flag == 0){
+            throw new RuntimeException("这个cityId不存在");
+        }
+        return doGetWeather(cityId,cityId);
     }
 
     @Override
     public WeatherResponse getDataByCityName(String cityName) {
-        String uri = WEATHER_URI + "city=" + cityName;
-        return this.doGetWeather(uri);
+        String cityId = null;
+        List<City> cityList = CityList.getInstance();
+        for(City c : cityList){
+            if(c.getCityCode().equals(cityName)){
+                cityId = c.getCityId();
+                break;
+            }
+        }
+        if(cityId == null){
+            throw new RuntimeException("这个cityName不存在");
+        }
+        String uri = WEATHER_URI + "citykey=" + cityId;
+        String key = cityId;
+        return doGetWeather(uri,key);
     }
 
     @Override
     public void syncDateByCityId(String cityId) {
         String uri = WEATHER_URI + "citykey=" + cityId;
-        this.saveWeatherData(uri);
+        this.saveWeatherData(uri,cityId);
     }
 
     /**
@@ -65,8 +90,7 @@ public class WeatherDataServiceImpl implements WeatherDataService {
      *
      * @param uri
      */
-    private void saveWeatherData(String uri) {
-        String key = uri;
+    private void saveWeatherData(String uri,String key) {
         String strBody = null;
         ValueOperations<String, String> ops = stringRedisTemplate.opsForValue();
 
@@ -79,12 +103,11 @@ public class WeatherDataServiceImpl implements WeatherDataService {
         strBody = HttpClientUtil.doGet(uri);
 
         // 数据写入缓存
-        ops.set(key, strBody, TIME_OUT, TimeUnit.SECONDS);
+        ops.set(key, strBody);
 
     }
 
-    private WeatherResponse doGetWeather(String uri) {
-        String key = uri;
+    private WeatherResponse doGetWeather(String uri,String key) {
         String strBody = null;
         ObjectMapper mapper = new ObjectMapper();
         WeatherResponse resp = null;
@@ -106,7 +129,7 @@ public class WeatherDataServiceImpl implements WeatherDataService {
             log.info(strBody);
 
             // 数据写入缓存
-            ops.set(key, strBody, TIME_OUT, TimeUnit.SECONDS);
+            ops.set(key, strBody);
         }
 
         try {

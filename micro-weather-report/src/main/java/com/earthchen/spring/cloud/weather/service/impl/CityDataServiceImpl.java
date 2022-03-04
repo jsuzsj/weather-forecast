@@ -33,6 +33,7 @@ public class CityDataServiceImpl implements CityDataService {
         BufferedReader br1 = new BufferedReader(fr);
 
         String str = null;
+        br1.readLine();//不要标签
         while((str = br1.readLine()) != null) {
             String data[] = str.split(",");
             String cityName = null;

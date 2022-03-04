@@ -33,8 +33,10 @@ public class WeatherDataSyncTask extends BaseTask {
      */
     @Override
     public String getCronExpression() {
-        return "* 0/30 * * * ? *";
+//        return "* 0/30 * * * ? *";
+        return  "0 50 17 * * ? *";
     }
+
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
