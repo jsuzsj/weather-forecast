@@ -8,6 +8,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+
 @RestController
 @RequestMapping("/weather")
 public class WeatherController {
@@ -23,5 +27,10 @@ public class WeatherController {
     @GetMapping("/cityName/{cityName}")
     public WeatherResponse getWeatherByCityName(@PathVariable("cityName") String cityName) {
         return weatherDataService.getDataByCityName(cityName);
+    }
+
+    @GetMapping("/updateCityList/")
+    public String getWeatherByCityName() throws Exception{
+        return "test";
     }
 }

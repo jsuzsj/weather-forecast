@@ -1,5 +1,9 @@
 package com.earthchen.spring.cloud.weather.vo;
 
+import com.earthchen.spring.cloud.weather.service.CityDataService;
+import com.earthchen.spring.cloud.weather.service.WeatherReportService;
+import com.earthchen.spring.cloud.weather.service.impl.CityDataServiceImpl;
+import com.earthchen.spring.cloud.weather.service.impl.WeatherReportServiceImpl;
 import lombok.Data;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -14,6 +18,21 @@ import java.util.List;
 public class CityList {
 
     @XmlElement(name = "d")
-    private List<City> cityList;
+    private volatile static List<City> cityList;
 
+    public static List<City> getInstance(){
+        if(cityList == null){
+            synchronized (CityList.class){
+                if(cityList== null){
+                    CityDataService cs = new CityDataServiceImpl();
+                    try {
+                        CityList.cityList = cs.listCity();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+        return cityList;
+    }
 }

@@ -2,6 +2,7 @@ package com.earthchen.spring.cloud.weather.controller;
 
 import com.earthchen.spring.cloud.weather.service.CityDataService;
 import com.earthchen.spring.cloud.weather.service.WeatherReportService;
+import com.earthchen.spring.cloud.weather.vo.CityList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,9 +27,9 @@ public class WeatherReportController {
 
     @GetMapping("/cityId/{cityId}")
     public ModelAndView getReportByCityId(@PathVariable("cityId") String cityId, Model model) throws Exception {
-        model.addAttribute("title", "EarthChen的天气预报");
+        model.addAttribute("title", "Test的天气预报");
         model.addAttribute("cityId", cityId);
-        model.addAttribute("cityList", cityDataService.listCity());
+        model.addAttribute("cityList", CityList.getInstance());
         model.addAttribute("report", weatherReportService.getDataByCityId(cityId));
         return new ModelAndView("weather/report", "reportModel", model);
     }

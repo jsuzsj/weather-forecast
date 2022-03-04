@@ -1,6 +1,8 @@
 spring:
   redis:
     password: 123456
+    host: 192.168.0.101
+    port: 6379
 
 
   thymeleaf:
