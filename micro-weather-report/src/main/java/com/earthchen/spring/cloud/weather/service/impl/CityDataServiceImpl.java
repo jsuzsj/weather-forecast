@@ -1,9 +1,7 @@
 package com.earthchen.spring.cloud.weather.service.impl;
 
 import com.earthchen.spring.cloud.weather.service.CityDataService;
-import com.earthchen.spring.cloud.weather.util.XmlBuilderUtil;
-import com.earthchen.spring.cloud.weather.vo.City;
-import com.earthchen.spring.cloud.weather.vo.CityList;
+import com.earthchen.spring.cloud.weather.vo2.City;
 import lombok.extern.slf4j.Slf4j;
 import net.sourceforge.pinyin4j.PinyinHelper;
 import net.sourceforge.pinyin4j.format.HanyuPinyinCaseType;
@@ -11,9 +9,6 @@ import net.sourceforge.pinyin4j.format.HanyuPinyinOutputFormat;
 import net.sourceforge.pinyin4j.format.HanyuPinyinToneType;
 import net.sourceforge.pinyin4j.format.HanyuPinyinVCharType;
 import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
-import org.springframework.context.annotation.Bean;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -33,19 +28,19 @@ public class CityDataServiceImpl implements CityDataService {
         BufferedReader br1 = new BufferedReader(fr);
 
         String str = null;
-        br1.readLine();//不要标签
         while((str = br1.readLine()) != null) {
             String data[] = str.split(",");
             String cityName = null;
             City c = new City();
-            c.setCityId(data[0]);
+            c.setCityid(Integer.valueOf(data[0]));
             if(data[5].equals("-")){
                 cityName=data[2];
             }else{
                 cityName=data[3];
             }
-            c.setCityName(cityName);
-            c.setCityCode(getPinyin(cityName));
+            c.setCityname(cityName);
+            c.setCitycode(getPinyin(cityName));
+            c.setProvince(data[3]);
             cityList.add(c);
         }
 // 关闭流

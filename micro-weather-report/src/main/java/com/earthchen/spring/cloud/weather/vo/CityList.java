@@ -1,9 +1,8 @@
 package com.earthchen.spring.cloud.weather.vo;
 
 import com.earthchen.spring.cloud.weather.service.CityDataService;
-import com.earthchen.spring.cloud.weather.service.WeatherReportService;
 import com.earthchen.spring.cloud.weather.service.impl.CityDataServiceImpl;
-import com.earthchen.spring.cloud.weather.service.impl.WeatherReportServiceImpl;
+import com.earthchen.spring.cloud.weather.vo2.City;
 import lombok.Data;
 
 import javax.xml.bind.annotation.XmlAccessType;

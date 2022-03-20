@@ -40,6 +40,7 @@ public class WeatherReportController {
         model.addAttribute("cityId", 0);
         model.addAttribute("cityList", CityList.getInstance());
         model.addAttribute("report", weatherDataService.getDataByCityName(cityName).getData());
+        System.out.println(weatherDataService.getDataByCityName(cityName).getData());
         return new ModelAndView("weather/report", "reportModel", model);
     }
 }

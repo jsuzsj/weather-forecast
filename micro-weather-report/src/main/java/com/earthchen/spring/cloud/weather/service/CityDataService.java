@@ -1,6 +1,6 @@
 package com.earthchen.spring.cloud.weather.service;
 
-import com.earthchen.spring.cloud.weather.vo.City;
+import com.earthchen.spring.cloud.weather.vo2.City;
 
 import java.util.List;
 

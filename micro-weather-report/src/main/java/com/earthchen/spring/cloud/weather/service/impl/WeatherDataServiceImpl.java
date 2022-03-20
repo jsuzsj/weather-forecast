@@ -2,24 +2,18 @@ package com.earthchen.spring.cloud.weather.service.impl;
 
 import com.earthchen.spring.cloud.weather.service.WeatherDataService;
 import com.earthchen.spring.cloud.weather.util.HttpClientUtil;
-import com.earthchen.spring.cloud.weather.vo.City;
 import com.earthchen.spring.cloud.weather.vo.CityList;
 import com.earthchen.spring.cloud.weather.vo.WeatherResponse;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
+import com.earthchen.spring.cloud.weather.vo2.City;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestOperations;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -50,7 +44,7 @@ public class WeatherDataServiceImpl implements WeatherDataService {
         int flag = 0;
         List<City> cityList = CityList.getInstance();
         for(City c : cityList){
-            if(c.getCityId().equals(cityId)){
+            if(c.getId().toString().equals(cityId)){
                 flag = 1;
                 break;
             }
@@ -66,8 +60,8 @@ public class WeatherDataServiceImpl implements WeatherDataService {
         String cityId = null;
         List<City> cityList = CityList.getInstance();
         for(City c : cityList){
-            if(c.getCityCode().equals(cityName)){
-                cityId = c.getCityId();
+            if(c.getCitycode().equals(cityName)){
+                cityId = c.getCityid().toString();
                 break;
             }
         }

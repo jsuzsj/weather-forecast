@@ -1,9 +1,12 @@
 package com.earthchen.spring.cloud.weather.task;
 
+import com.earthchen.spring.cloud.weather.config.SessionFactory;
+import com.earthchen.spring.cloud.weather.mapper.CityMapper;
 import com.earthchen.spring.cloud.weather.service.CityDataService;
 import com.earthchen.spring.cloud.weather.service.WeatherDataService;
-import com.earthchen.spring.cloud.weather.vo.City;
+import com.earthchen.spring.cloud.weather.vo2.City;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.session.SqlSession;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +37,7 @@ public class WeatherDataSyncTask extends BaseTask {
     @Override
     public String getCronExpression() {
 //        return "* 0/30 * * * ? *";
-        return  "0 50 17 * * ? *";
+        return  "0 24 9 * * ? *";
     }
 
 
@@ -49,13 +52,16 @@ public class WeatherDataSyncTask extends BaseTask {
         } catch (Exception e) {
             log.error("Exception!", e);
         }
-
         // 遍历城市ID获取天气
-        for (City city : cityList) {
-            String cityId = city.getCityId();
-            log.info("Weather Data Sync Job, cityId:" + cityId);
+        try {
+            for (City city : cityList) {
+                String cityId = city.getCityid().toString();
+                log.info("Weather Data Sync Job, cityId:" + cityId);
 
-            weatherDataService.syncDateByCityId(cityId);
+                weatherDataService.syncDateByCityId(cityId);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
 
         log.info("Weather Data Sync Job. End！");
