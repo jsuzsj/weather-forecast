@@ -44,7 +44,7 @@ public class WeatherDataServiceImpl implements WeatherDataService {
         int flag = 0;
         List<City> cityList = CityList.getInstance();
         for(City c : cityList){
-            if(c.getId().toString().equals(cityId)){
+            if(c.getCityid().toString().equals(cityId)){
                 flag = 1;
                 break;
             }
@@ -52,7 +52,9 @@ public class WeatherDataServiceImpl implements WeatherDataService {
         if(flag == 0){
             throw new RuntimeException("这个cityId不存在");
         }
-        return doGetWeather(cityId,cityId);
+        String uri = WEATHER_URI + "citykey=" + cityId;
+        String key = cityId;
+        return doGetWeather(uri,key);
     }
 
     @Override

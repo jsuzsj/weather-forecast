@@ -1,7 +1,7 @@
 package com.earthchen.spring.cloud.weather.controller;
 
 import com.earthchen.spring.cloud.weather.service.WeatherDataService;
-import com.earthchen.spring.cloud.weather.vo.WeatherResponse;
+import com.earthchen.spring.cloud.weather.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

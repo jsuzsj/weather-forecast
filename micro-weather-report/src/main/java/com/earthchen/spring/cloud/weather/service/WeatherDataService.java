@@ -1,6 +1,6 @@
 package com.earthchen.spring.cloud.weather.service;
 
-import com.earthchen.spring.cloud.weather.vo.WeatherResponse;
+import com.earthchen.spring.cloud.weather.vo.*;
 
 /**
  * Weather Data Service.

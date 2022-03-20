@@ -1,8 +1,7 @@
 package com.earthchen.spring.cloud.weather.controller;
 
-import com.earthchen.spring.cloud.weather.service.CityDataService;
 import com.earthchen.spring.cloud.weather.service.WeatherDataService;
-import com.earthchen.spring.cloud.weather.service.WeatherReportService;
+import com.earthchen.spring.cloud.weather.service.*;
 import com.earthchen.spring.cloud.weather.vo.CityList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -28,7 +27,8 @@ public class WeatherReportController {
     @GetMapping("/cityId/{cityId}")
     public ModelAndView getReportByCityId(@PathVariable("cityId") String cityId, Model model) throws Exception {
         model.addAttribute("title", "Test的天气预报");
-        model.addAttribute("cityId", cityId);
+        model.addAttribute("cityname", "0");
+        model.addAttribute("cityid", cityId);
         model.addAttribute("cityList", CityList.getInstance());
         model.addAttribute("report", weatherReportService.getDataByCityId(cityId));
         return new ModelAndView("weather/report", "reportModel", model);
@@ -36,8 +36,8 @@ public class WeatherReportController {
     @GetMapping("/cityName/{cityName}")
     public ModelAndView getReportByCityName(@PathVariable("cityName") String cityName, Model model) throws Exception {
         model.addAttribute("title", "Test的天气预报");
-        model.addAttribute("cityName", cityName);
-        model.addAttribute("cityId", 0);
+        model.addAttribute("cityname", cityName);
+        model.addAttribute("cityid", 0);
         model.addAttribute("cityList", CityList.getInstance());
         model.addAttribute("report", weatherDataService.getDataByCityName(cityName).getData());
         System.out.println(weatherDataService.getDataByCityName(cityName).getData());

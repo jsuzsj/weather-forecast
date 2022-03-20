@@ -19,10 +19,12 @@
         <select class="custom-select" id="selectCityId">
             <option th:each="city : ${reportModel.cityList}"
                     th:value="${city.cityid}" th:text="${city.cityname}"
-                    th:selected="${city.cityid eq reportModel.cityid or city.cityname eq reportModel.cityname}"></option>
+                    th:selected="${city.cityid eq reportModel.cityid or city.citycode eq reportModel.cityname}"></option>
         </select>
     </div>
     <div class="row">
+        <!--/*@thymesVar id="report" type="com.earthchen.spring.cloud.weather.vo2.Weather"*/-->
+        <!--/*@thymesVar id="report" type="com"*/-->
         <h1 class="text-success" th:text="${reportModel.report.city}">深圳</h1>
     </div>
     <div class="row">
