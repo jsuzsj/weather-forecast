@@ -18,8 +18,8 @@
         <h3 th:text="${reportModel.title}">waylau</h3>
         <select class="custom-select" id="selectCityId">
             <option th:each="city : ${reportModel.cityList}"
-                    th:value="${city.cityId}" th:text="${city.cityName}"
-                    th:selected="${city.cityId eq reportModel.cityId or city.cityName eq reportModel.cityName}"></option>
+                    th:value="${city.cityid}" th:text="${city.cityname}"
+                    th:selected="${city.cityid eq reportModel.cityid or city.cityname eq reportModel.cityname}"></option>
         </select>
     </div>
     <div class="row">
