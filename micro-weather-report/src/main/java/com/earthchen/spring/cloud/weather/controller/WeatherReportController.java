@@ -17,8 +17,8 @@ import org.springframework.web.servlet.ModelAndView;
  * 天气预报Controller
  */
 @RestController
-@RequestMapping("/report")
-public class WeatherReportController {
+@RequestMapping("/secure/report")
+public class WeatherReportController extends  BaseController{
 
     @Autowired
     private WeatherDataService weatherDataService;
@@ -33,7 +33,8 @@ public class WeatherReportController {
 
     @GetMapping("/cityId/{cityId}")
     public ModelAndView getReportByCityId(@PathVariable("cityId") String cityId, Model model) throws Exception {
-        model.addAttribute("title", "Test的天气预报");
+        model.addAttribute("title", "实时的天气预报");
+        model.addAttribute("loginUser", getLoginUser());
         model.addAttribute("cityname", "0");
         model.addAttribute("cityid", cityId);
         model.addAttribute("cityList",cityMapper.selectAll());
@@ -42,8 +43,9 @@ public class WeatherReportController {
     }
     @GetMapping("/cityName/{cityName}")
     public ModelAndView getReportByCityName(@PathVariable("cityName") String cityName, Model model) throws Exception {
-        model.addAttribute("title", "Test的天气预报");
+        model.addAttribute("title", "实时的天气预报");
         model.addAttribute("cityname", cityName);
+        model.addAttribute("loginUser", getLoginUser());
         model.addAttribute("cityid", 0);
         model.addAttribute("cityList", cityDataService.listCity());
         WeatherResponse wr = weatherDataService.getDataByCityName(cityName);

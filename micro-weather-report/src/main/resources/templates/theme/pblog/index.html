@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<div th:replace="home/fragments/header :: header"></div>
+	<body>
+		<header id="header">
+			<div th:replace="home/fragments/navbar :: navbar"></div>
+		</header>
+		<div class="pb-container pb-content">
+			<div class="pb-main">
+<!--				<div class="swiper-container mb-20" th:if="${not #lists.isEmpty(sliderList)}">-->
+<!--					<div class="swiper-wrapper">-->
+<!--						<div th:each="item:${sliderList}" class="swiper-slide">-->
+<!--							<a th:href="@{${'/blog/article/'+item.id}}">-->
+<!--								<img th:src="${item.sliderImg}" style="max-height: 450px">-->
+<!--								<p class="slider-title" th:text="${item.title}"></p>-->
+<!--							</a>-->
+<!--						</div>-->
+<!--					</div>-->
+<!--					<div class="swiper-pagination"></div>-->
+<!--					<div class="swiper-button-prev"><i class="fa fa-chevron-circle-left"></i></div>-->
+<!--					<div class="swiper-button-next"><i class="fa fa-chevron-circle-right"></i></div>-->
+<!--				</div>-->
+
+				<div class="jumbotron">
+					<h1>天气查询</h1>
+					<p>为您带来更为方便，快捷，时效性的天气查询信息。并包含用户交流功能！！！快过来感受吧！！！</p>
+					<p><a class="btn btn-primary btn-lg" href="#" role="button">更多...</a></p>
+				</div>
+				<div class="row">
+					<div class="col-sm-6 col-md-4">
+						<div class="thumbnail">
+							<img src="/img/ex_1.jpg" alt="实时性、准确性">
+							<div class="caption">
+								<h3>提供实时天气信息</h3>
+								<p>供用户在线免费查看当地所在区域的天气信息，并且可以对当天天气进行评价交流！</p>
+								<p><a href="#" class="btn btn-primary" role="button">使用</a> <a href="#" class="btn btn-default" role="button">了解更多</a></p>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-6 col-md-4">
+						<div class="thumbnail">
+							<img src="/img/ex_2.jpg" alt="稳定、可靠">
+							<div class="caption">
+								<h3>天气API更新</h3>
+								<p>这个功能供为天气管理人员发布新天气，需要按规范文档使用，即做到天气的实时更新，为用户提供更为准确的天气信息服务。</p>
+								<p><a href="#" class="btn btn-primary" role="button">使用</a> <a href="#" class="btn btn-default" role="button">了解更多</a></p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div th:replace="home/fragments/sidebar :: sidebar"></div>
+		</div>
+		<div th:replace="home/fragments/footer :: footer"></div>
+		<div class="return_top"><a class=" fa fa-arrow-up"></a></div>
+	</body>
+	<script>
+		$(function () {
+			var pageUrl = '[[${pageUrl}]]';
+			var $pagination = $("#pagination");
+			if ($pagination) {
+				$pagination.pagination({
+					currentPage: [[${page.current}]],
+					totalPage: [[${page.pages}]],
+					callback: function (pageNo) {
+						window.location.href = (ctx + pageUrl + '/' +  pageNo).replace('//', '/');
+					}
+				});
+			}
+		})
+	</script>
+
+</html>

@@ -30,7 +30,7 @@
                              targetPackage="com.earthchen.spring.cloud.weather.mapper"
                              targetProject="C:\Users\76985\Desktop\weather\weather-forecast\micro-weather-report\src\main\java">
         </javaClientGenerator>
-        <table tableName="%">
+        <table tableName="message">
             <generatedKey column="id" sqlStatement="MySql"/>
         </table>
     </context>

@@ -1,0 +1,37 @@
+<head th:fragment="header">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>天气查询网站</title>
+    <link rel="stylesheet" th:href="@{/libs/bootstrap/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/libs/theme/pblog/css/jquery.pagination.css}" />
+    <link rel="stylesheet" th:href="@{/libs/swiper/css/swiper.min.css}"/>
+    <link rel="stylesheet" th:href="@{/libs/font-icon/icon.css}"/>
+    <link rel="stylesheet" th:href="@{/libs/theme/pblog/css/web-common.css}" />
+    <link rel="stylesheet" th:href="@{/libs/theme/pblog/css/web-blog.css}" />
+    <link rel="stylesheet" th:href="@{/css/weather-comment.css}" />
+
+    <script th:inline="javascript">var ctx = [[@{/}]];</script>
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/libs/theme/pblog/js/jquery.pagination.min.js}"></script>
+    <script th:src="@{/libs/bootstrap/bootstrap.min.js}"></script>
+    <script th:src="@{/libs/swiper/js/swiper.min.js}"></script>
+    <script th:src="@{/libs/theme/pblog/js/tagcloud.js}"></script>
+    <script th:src="@{/js/hc-sticky.js}" ></script>
+    <script th:src="@{/libs/theme/pblog/js/pb-blog.js}"></script>
+</head>
+<head th:fragment="copyrightCommon"  class="copyright-common copyright-section">
+    <script>
+        /*加载底部前执行。ps：防止闪现
+         控制当页面内容过少时，底部仍在屏幕最下方
+         主体内容最小高度
+         */
+        var topHeight=56;//头部高度
+        var footerHeight=57;//底部高度
+        var contentMinHeight = $(window).height()-topHeight-footerHeight;
+        $(".main-content").css("min-height",contentMinHeight)
+        $(window).resize(function(){
+            var contentMinHeight = $(window).height()-topHeight-footerHeight;
+            $(".main-content").css("min-height",contentMinHeight)
+        })
+    </script>
+</head>

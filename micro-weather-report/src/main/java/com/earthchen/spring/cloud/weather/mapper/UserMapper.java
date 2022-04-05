@@ -47,4 +47,7 @@ public interface UserMapper {
     int updateByPrimaryKey(User record);
 
     int check(String mobile,String password);
+
+    User findByUsername(String nickname);
+    User findByMobile(String mobile);
 }

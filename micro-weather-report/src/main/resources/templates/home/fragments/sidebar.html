@@ -1,0 +1,77 @@
+<div th:fragment="sidebar" class="pb-sidebar">
+    <div class="about panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">关于本站</h3>
+        </div>
+        <div class="panel-body">
+            <ul>
+                <div class="avatar"> <img src="/img/user.png" alt="" /></div>
+                <p class="abname">天气预报</p>
+                <p class="abtext">提供在线快捷的在线天气查询服务,高效的在线天气信息更新功能</p>
+            </ul>
+        </div>
+    </div>
+<!--    <div class="tag panel panel-default">-->
+<!--        <div class="panel-heading">-->
+<!--            <h3 class="panel-title">标签云</h3>-->
+<!--        </div>-->
+<!--        <div class="panel-body" id="tagcloud" style="overflow: hidden">-->
+<!--            <a class="btn btn-default btn-xs" th:each="item:${TAG_LIST}" th:href="@{${'/blog/tag/'+item.id}}" th:text="${item.name}"></a>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div class="pb-sidebar-tabs">-->
+<!--        <ul id="myTab" class="nav nav-tabs">-->
+<!--            <li class="active"><a href="#latest" data-toggle="tab">最新公告</a></li>-->
+<!--        </ul>-->
+<!--        <div class="tab-content">-->
+<!--            <div class="tab-pane active" id="latest">-->
+<!--                <ol class="article-list">-->
+<!--                    <li th:each="item,temp:${RECENT_LIST}"  class="slide">-->
+<!--                        <span th:class="${'li-icon li-icon-'+(temp.index+1)}" th:text="${temp.index+1}"></span>-->
+<!--                        <a th:text="${item.title}" th:href="${'/blog/article/'+item.id}"></a>-->
+<!--                    </li>-->
+<!--                </ol>-->
+<!--            </div>-->
+<!--            <div class="tab-pane" id="recommend">-->
+<!--                <ol class="article-list">-->
+<!--                    <li th:each="item,temp:${RECOMMENDED_LIST}"  class="slide">-->
+<!--                        <span th:class="${'li-icon li-icon-'+(temp.index+1)}" th:text="${temp.index+1}"></span>-->
+<!--                        <a th:text="${item.title}" th:href="${'/blog/article/'+item.id}"></a>-->
+<!--                    </li>-->
+<!--                </ol>-->
+<!--            </div>-->
+<!--            <div class="tab-pane" id="hot">-->
+<!--                <ol class="article-list">-->
+<!--                    <li th:each="item,temp:${HOT_LIST}"  class="slide">-->
+<!--                        <span th:class="${'li-icon li-icon-'+(temp.index+1)}" th:text="${temp.index+1}"></span>-->
+<!--                        <a th:text="${item.title}" th:href="${'/blog/article/'+item.id}"></a>-->
+<!--                    </li>-->
+<!--                </ol>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div class="link panel panel-default">-->
+<!--        <div class="panel-heading">-->
+<!--            <h3 class="panel-title">友情链接</h3>-->
+<!--        </div>-->
+<!--        <div class="panel-body">-->
+<!--            <ul>-->
+<!--                <li th:each="item:${LINK_LIST}"> <a th:href="${item.url}" th:text="${item.name}" target="_blank"></a></li>-->
+<!--            </ul>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div class="webinfo panel panel-default">-->
+<!--        <div class="panel-heading">-->
+<!--            <h3 class="panel-title">网站信息</h3>-->
+<!--        </div>-->
+<!--        <div class="panel-body">-->
+<!--            <ul>-->
+<!--                <li> <i class="fa fa-file fa-fw"></i> 文章总数：<span th:text="${SITE_INFO.articleCount}"></span> 篇</li>-->
+<!--                <li> <i class="fa fa-tags fa-fw"></i> 标签总数：<span th:text="${SITE_INFO.tagCount}"></span> 个</li>-->
+<!--                <li> <i class="fa fa-folder-open fa-fw"></i> 分类总数：<span th:text="${SITE_INFO.categoryCount}"></span> 个</li>-->
+<!--                <li> <i class="fa fa-comments fa-fw"></i> 留言数量：<span th:text="${SITE_INFO.commentCount}"></span> 条</li>-->
+<!--            </ul>-->
+<!--        </div>-->
+<!--    </div>-->
+
+</div>

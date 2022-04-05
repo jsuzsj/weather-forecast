@@ -18,7 +18,7 @@ public class MyBatisGenerator {
         //MBG 执行过程中的警告信息
         List<String> warnings = new ArrayList<String>();
         //当生成的代码重复时，覆盖原代码
-        boolean overwrite = true;
+        boolean overwrite = false;
         //读取我们的 MBG 配置文件
         InputStream is = MyBatisGenerator.class.getResourceAsStream("/generatorConfiguation.xml");
         ConfigurationParser cp = new ConfigurationParser(warnings);
