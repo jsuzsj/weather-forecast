@@ -2,14 +2,15 @@ package com.earthchen.spring.cloud.weather.service.impl;
 
 import com.earthchen.spring.cloud.weather.mapper.ForecastMapper;
 import com.earthchen.spring.cloud.weather.mapper.WeatherMapper;
-import com.earthchen.spring.cloud.weather.service.CityDataService;
 import com.earthchen.spring.cloud.weather.service.WeatherDataService;
 import com.earthchen.spring.cloud.weather.util.HttpClientUtil;
 import com.earthchen.spring.cloud.weather.util.StringUtilForFormat;
+import com.earthchen.spring.cloud.weather.vo.Forecast;
 import com.earthchen.spring.cloud.weather.vo.Weather;
 import com.earthchen.spring.cloud.weather.vo.WeatherResponse;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.earthchen.spring.cloud.weather.vo2.City;
@@ -21,7 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.earthchen.spring.cloud.weather.vo2.Forecast;
+
 @Service
 @Slf4j
 public class WeatherDataServiceImpl implements WeatherDataService {
@@ -40,7 +41,6 @@ public class WeatherDataServiceImpl implements WeatherDataService {
     private RestTemplate restTemplate;
     @Autowired
     private CityDataServiceImpl cityDataService;
-
     @Autowired
     private WeatherMapper weatherMapper;
     @Autowired
@@ -66,6 +66,36 @@ public class WeatherDataServiceImpl implements WeatherDataService {
         String uri = WEATHER_URI + "citykey=" + cityId;
         String key = cityId;
         return doGetWeather(uri,key);
+    }
+    @Override
+    public WeatherResponse getDataByCityId2(String cityId) {
+        int flag = 0;
+        String cityname = null;
+        List<City> cityList = cityDataService.listCity();
+        for(City c : cityList){
+            if(c.getCityid().toString().equals(cityId)){
+                cityname = c.getCounty();
+                flag = 1;
+                break;
+            }
+        }
+        if(flag == 0){
+            throw new RuntimeException("这个cityId不存在");
+        }
+        WeatherResponse ans = new WeatherResponse();
+        List<Forecast> forecasts = new ArrayList<>();
+        for(com.earthchen.spring.cloud.weather.vo2.Forecast f:forecastMapper.selectSevenDayForecast(Integer.valueOf(cityId))){
+            forecasts.add(StringUtilForFormat.transferForecast(f));
+        }
+        Weather data = new Weather();
+        data.setForecast(forecasts);
+        data.setYesterday(StringUtilForFormat.transferYesterday(forecastMapper.selectYesterday(Integer.valueOf(cityId))));
+        data.setCity(cityname);
+        Weather weather = StringUtilForFormat.transferWeather(weatherMapper.getFreshWeather(Integer.valueOf(cityId)));
+        data.setWendu(weather.getWendu());
+        data.setGanmao(weather.getGanmao());
+        ans.setData(data);
+        return ans;
     }
 
     @Override
@@ -128,16 +158,8 @@ public class WeatherDataServiceImpl implements WeatherDataService {
             newWeather.setGanmao(weather.getGanmao());
             newWeather.setWendu(Integer.valueOf(weather.getWendu()));
             weatherMapper.insert(newWeather);
-            for(com.earthchen.spring.cloud.weather.vo.Forecast f:weather.getForecast()) {
-                Forecast newf = new Forecast();
-                System.out.println(f.getFengli());
-                newf.setFengli(StringUtilForFormat.getNumber(f.getFengli()));
-                newf.setDate(newf.getDate());
-                newf.setFengxiang(f.getFengxiang());
-                newf.setHigh(StringUtilForFormat.getNumber(f.getHigh()));
-                newf.setLow(StringUtilForFormat.getNumber(f.getLow()));
-                newf.setType(f.getType());
-                newf.setCityid(Integer.valueOf(key));
+            for(Forecast f:weather.getForecast()) {
+                com.earthchen.spring.cloud.weather.vo2.Forecast newf = StringUtilForFormat.transferForecast(f,key);
                 forecastMapper.insert(newf);
             }
         }catch (NullPointerException e){
@@ -151,7 +173,7 @@ public class WeatherDataServiceImpl implements WeatherDataService {
         WeatherResponse resp = null;
         ValueOperations<String, String> ops = stringRedisTemplate.opsForValue();
         // 先查缓存，缓存有的取缓存中的数据
-        if (stringRedisTemplate.hasKey(key)) {
+        if (stringRedisTemplate.hasKey(key)&&false) {
             log.info("Redis has data");
             strBody = ops.get(key);
         } else {

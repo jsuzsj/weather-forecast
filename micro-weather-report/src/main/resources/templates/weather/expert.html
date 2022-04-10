@@ -1,0 +1,209 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:replace="home/fragments/header :: header"></div>
+<head >
+    <meta charset="UTF-8"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <title>老卫的天气预报（waylau.com）</title>
+</head>
+<body>
+<header id="header" style="position: relative;">
+    <div th:replace="home/fragments/navbar :: navbar"></div>
+</header>
+<div  style="position: relative;display: flex;">
+<div class="container-left" style="width: 50%;">
+    <div class="row">
+        <h3 th:text="${reportModel.title}">waylau</h3>
+        <div id="app">
+            <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="162px">
+            <el-form-item label="天气查询" prop="province">
+            <el-select v-model="dataForm.province" placeholder="请选择" @change="changeProvince">
+                <el-option
+                        v-for="item in options"
+                        :key="item.province"
+                        :label="item.province"
+                        :value="item.province">
+                </el-option>
+            </el-select>
+            <!--        <el-input v-model="dataForm.province" placeholder="所属市"></el-input>-->
+            <el-select v-model="dataForm.cityname" placeholder="请选择" @change="updateCounty">
+                <el-option
+                        v-for="item in options1"
+                        :key="item"
+                        :label="item"
+                        :value="item">
+                </el-option>
+            </el-select>
+<el-select v-model="dataForm.county" placeholder="请选择" @change="changeCounty">
+        <el-option
+          v-for="item in options2"
+          :key="item.county"
+          :label="item.county"
+          :value="item">
+        </el-option>
+      </el-select>
+        </el-form-item>
+            </el-form>
+        </div>
+<!--        <select class="custom-select" id="selectCityId">-->
+<!--            <option th:each="city : ${reportModel.cityList}"-->
+<!--                    th:value="${city.cityid}" th:text="${city.county} == '城区' ?${city.cityname}:${city.county}"-->
+<!--                    th:selected="${city.cityid eq reportModel.cityid or city.citycode eq reportModel.cityname}">-->
+
+<!--            </option>-->
+<!--        </select>-->
+    </div>
+    <div class="row">
+        <!--/*@thymesVar id="report" type="com.earthchen.spring.cloud.weather.vo2.Weather"*/-->
+        <!--/*@thymesVar id="report" type="com"*/-->
+        <h1 class="text-success" th:text="${reportModel.city}">深圳</h1>
+    </div>
+    <div class="row">
+        <p>
+            相比与昨天<span th:text="${reportModel.report.yesterday.date}"></span> 天气
+            <span th:text="${reportModel.report.yesterday.type}"></span>
+        </p>
+    </div>
+    <div class="row">
+        <p>
+            风力等级：<span th:text="${reportModel.report.yesterday.fl}"></span>
+        </p>
+    </div>
+    <div class="row">
+        <p>
+            当前温度：<span th:text="${reportModel.report.wendu}"></span>
+        </p>
+    </div>
+    <div class="row">
+        <p>
+            最高温度：<span th:text="${reportModel.report.yesterday.high}"></span>
+            最地温度：<span th:text="${reportModel.report.yesterday.low}"></span>
+        </p>
+    </div>
+    <div class="row">
+        <p>
+            风向：<span th:text="${reportModel.report.yesterday.fx}"></span>
+        </p>
+    </div>
+</div>
+    <div class="container-right" style="width: 50%;">
+        <ul class="nav nav-tabs">
+            <li role="presentation"><a value="1"  th:href="'/secure/report/cityId/' + ${cityid}">预报</a></li>
+            <li role="presentation"><a value="2"  th:href="'/secure/report/comment/' + ${cityid}">评论</a></li>
+            <li role="presentation" class="active" ><a value="3"  th:href="'/secure/report/expert/' + ${cityid}">专家说</a></li>
+        </ul>
+        <div class="contain">
+            <div class="list-group">
+                <a href="#" class="list-group-item active">
+                    <h4 class="list-group-item-heading">专家说：</h4>
+                    <p class="list-group-item-text"><span th:text="${reportModel.report.ganmao}"></span></p>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="home/fragments/footer :: footer"></div>
+
+<script type="text/javascript" th:src="@{/js/weather/report.js}"></script>
+<script th:src="@{/libs/eleui/index.js}"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data() {
+            return {
+                visible: false,
+                dataForm: {
+                    cityname: '',
+                    citycode: '',
+                    province: '',
+                    cityid: 0,
+                    county: ''
+                },
+                dataRule: {
+                    cityname: [
+                        {required: true, message: '城市名称不能为空', trigger: 'blur'}
+                    ],
+                    citycode: [
+                        {required: true, message: '城市拼音不能为空', trigger: 'blur'}
+                    ],
+                    province: [
+                        {required: true, message: '所属市不能为空', trigger: 'blur'}
+                    ],
+                    county: [
+                        {required: true, message: '不能为空', trigger: 'blur'}
+                    ]
+                },
+                options: [],
+                options1: [],
+                options2: [],
+                value: ''
+            }
+        },
+        mounted: function () {
+            this.init()
+        }
+        ,
+        methods: {
+            init(id) {
+                console.log('testInit')
+                // 获取省列表
+                axios({
+                    url: '/city/provinceList',
+                    method: 'get',
+                    params: {}
+                }).then(({data}) => {
+                    this.options = data
+                })
+            },
+            updateSelect() {
+                // 获取市级别列表
+                axios({
+                    url: '/city/cityList',
+                    method: 'get',
+                    params: {'provincename': this.dataForm.province}
+                }).then(({data}) => {
+                    this.dataForm.cityname = data[0];
+                    this.options1 = data
+                    // 获取县级别列表
+                    this.updateCounty();
+                })
+            },
+            updateCounty() {
+                // 获取县级别列表
+                axios({
+                    url: '/city/countyList',
+                    method: 'get',
+                    params: {'cityname': this.dataForm.cityname}
+                }).then(({data}) => {
+                    this.dataForm.county = data[0].county;
+                    this.options2 = data
+                })
+            },
+            changeProvince(value) {
+                console.log(value)
+                this.dataForm.province = value;
+                this.updateSelect();
+            },
+            changeCity(value) {
+                console.log(value)
+                this.dataForm.cityname = value;
+                this.updateSelect();
+            },
+            changeCounty(value){
+                console.log(value)
+                this.dataForm.cityid = value.cityid;
+                this.dataForm.county = value.county;
+                this.$forceUpdate()
+                this.dataFormSubmit()
+            },
+            // 表单提交
+            dataFormSubmit () {
+                console.log(this.dataForm.cityid)
+                location.href = "/secure/report/cityId/"+this.dataForm.cityid;
+            }
+        }
+    })
+</script>
+</body>
+</html>

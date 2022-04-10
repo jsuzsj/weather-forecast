@@ -37,9 +37,9 @@ $(function () {
     });
 
     function init(pageNumber) {
-        Core.postAjax("/blog/api/comments",{"sid":sid,"pageNumber": (pageNumber==null? 1 : pageNumber), "pageSize": 10, "status":1},function (data) {
+            var data = [[${messageList}]]
             var commentOne="";
-            if(data.total==0){
+            if(data.length==0){
                 commentOne+='<div class="no-comment">暂无评论，快来占领宝座</div>';
                 $("#comment-ul").append(commentOne);
             }else{
@@ -59,6 +59,7 @@ $(function () {
                         '				</span>'+
                         '			</div>'+
                         '           <div class="comment-content">';
+                    console.log("hehehehehe");
                     if(value.parent!=null){
                         commentOne +=
                             '<div class="comment-parent">'+
@@ -93,7 +94,7 @@ $(function () {
                     $("html,body").animate({
                         scrollTop:$("#"+commentLinkId).offset().top-55},{duration: 300,easing: "swing"})
                 })
-                
+
                 $(".reply").click(function () {
                     var replyId=$(this).attr("reply-id");
                     if($("#reply-comment-form").length>0){
@@ -167,7 +168,7 @@ $(function () {
                             return;
                         }
                         $("#reply-comment-textarea").val(replySimplemde.markdown(replySimplemde.value()));
-                        Core.postAjax("/blog/api/comment/save",$("#reply-comment-form").serialize(),function (data) {
+                        Core.postAjax("/blog/api/comment/send",$("#reply-comment-form").serialize(),function (data) {
                             if(Core.getCookie("pb-cms-username")==""){
                                 Core.setCookie("pb-cms-username",$("#reply-nickname").val(),30);
                                 Core.setCookie("pb-cms-qq",$("#reply-qq").val(),30);
@@ -189,7 +190,7 @@ $(function () {
                     $(this).hide();
                     $(this).prev().show();
                 })
-                
+
                 $(".comment-support").click(function () {
                     $thisLove = $(this);
                     Core.postAjax("/blog/api/love",{"bizId":$(this).attr("biz-id"),"bizType":2},function (data) {
@@ -199,11 +200,9 @@ $(function () {
                     });
                 })
             }
-
-        })
     }
     init();
-    
+
     /*提交评论*/
     $("#submitCommentBtn").click(function () {
         if($("#nickname").val()==""){
@@ -214,7 +213,7 @@ $(function () {
             return;
         }
         $("#comment-textarea").val(simplemde.markdown(simplemde.value()));
-        Core.postAjax("/blog/api/comment/save",$("#comment-form").serialize(),function (data) {
+        Core.postAjax("/blog/api/comment/send",$("#comment-form").serialize(),function (data) {
             layer.msg(data.msg, {
                 offset: '30%',
                 time: 800

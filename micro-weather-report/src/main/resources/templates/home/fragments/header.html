@@ -11,13 +11,26 @@
     <link rel="stylesheet" th:href="@{/css/weather-comment.css}" />
 
     <script th:inline="javascript">var ctx = [[@{/}]];</script>
+    <script th:src="@{/libs/vue/vue.js}"></script>
     <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/libs/axios/axios.min.js}"></script>
     <script th:src="@{/libs/theme/pblog/js/jquery.pagination.min.js}"></script>
     <script th:src="@{/libs/bootstrap/bootstrap.min.js}"></script>
     <script th:src="@{/libs/swiper/js/swiper.min.js}"></script>
+    <script th:src="@{/libs/layer/layer.js}"></script>
+    <script th:src="@{/libs/marked/marked.min.js}"></script>
     <script th:src="@{/libs/theme/pblog/js/tagcloud.js}"></script>
     <script th:src="@{/js/hc-sticky.js}" ></script>
     <script th:src="@{/libs/theme/pblog/js/pb-blog.js}"></script>
+
+    <link rel="stylesheet" th:href="@{/libs/font-icon/icon.css}"/>
+    <link rel="stylesheet" th:href="@{/libs/markdown/simplemde.min.css}">
+    <link rel="stylesheet" th:href="@{/libs/markdown/github-markdown.min.css}">
+    <link rel="stylesheet" th:href="@{/libs/markdown/highlight.min.css}">
+    <link rel="stylesheet" th:href="@{/libs/theme/pblog/css/web-common.css}" />
+    <link rel="stylesheet" th:href="@{/libs/theme/pblog/css/web-blog.css}" />
+    <link rel="stylesheet" th:href="@{/libs/eleui/index.css}" />
+
 </head>
 <head th:fragment="copyrightCommon"  class="copyright-common copyright-section">
     <script>

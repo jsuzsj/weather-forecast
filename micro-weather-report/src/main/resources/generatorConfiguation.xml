@@ -10,7 +10,7 @@
             <property name="addRemarkComments" value="true"/>
         </commentGenerator>
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://localhost:3306/weather?characterEncoding=utf-8"
+                        connectionURL="jdbc:mysql://localhost:3307/weather?characterEncoding=utf-8"
                         userId="root"
                         password="123456">
         </jdbcConnection>
@@ -18,17 +18,17 @@
             <property name="forceBigDecimals" value="false"/>
         </javaTypeResolver>
         <javaModelGenerator targetPackage="com.earthchen.spring.cloud.weather.vo2"
-                            targetProject="C:\Users\76985\Desktop\weather\weather-forecast\micro-weather-report\src\main\java">
+                            targetProject="E:\graduationProject\weather-forecast\micro-weather-report\src\main\java">
             <property name="enableSubPackages" value="false"/>
             <property name="trimStrings" value="false"/>
         </javaModelGenerator>
         <sqlMapGenerator targetPackage="com.earthchen.spring.cloud.weather.mapper"
-                         targetProject="C:\Users\76985\Desktop\weather\weather-forecast\micro-weather-report\src\main\java">
+                         targetProject="E:\graduationProject\weather-forecast\micro-weather-report\src\main\java">
             <property name="enableSubPackages" value="false"/>
         </sqlMapGenerator>
         <javaClientGenerator type="XMLMAPPER"
                              targetPackage="com.earthchen.spring.cloud.weather.mapper"
-                             targetProject="C:\Users\76985\Desktop\weather\weather-forecast\micro-weather-report\src\main\java">
+                             targetProject="E:\graduationProject\weather-forecast\micro-weather-report\src\main\java">
         </javaClientGenerator>
         <table tableName="message">
             <generatedKey column="id" sqlStatement="MySql"/>

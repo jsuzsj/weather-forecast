@@ -1,73 +1,348 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-	<div th:replace="home/fragments/header :: header"></div>
-	<body>
-		<header id="header">
-			<div th:replace="home/fragments/navbar :: navbar"></div>
-		</header>
-		<div class="pb-container pb-content">
-			<div class="pb-main">
-<!--				<div class="swiper-container mb-20" th:if="${not #lists.isEmpty(sliderList)}">-->
-<!--					<div class="swiper-wrapper">-->
-<!--						<div th:each="item:${sliderList}" class="swiper-slide">-->
-<!--							<a th:href="@{${'/blog/article/'+item.id}}">-->
-<!--								<img th:src="${item.sliderImg}" style="max-height: 450px">-->
-<!--								<p class="slider-title" th:text="${item.title}"></p>-->
-<!--							</a>-->
-<!--						</div>-->
-<!--					</div>-->
-<!--					<div class="swiper-pagination"></div>-->
-<!--					<div class="swiper-button-prev"><i class="fa fa-chevron-circle-left"></i></div>-->
-<!--					<div class="swiper-button-next"><i class="fa fa-chevron-circle-right"></i></div>-->
-<!--				</div>-->
+	<head>
+			<link rel="stylesheet" href="assets/css/swiper.min.css">
+			<link rel="stylesheet" href="assets/css/animate.css">
+			<link rel="stylesheet" href="assets/css/iconfont.css">
+			<link rel="stylesheet" href="assets/css/font-awesome.min.css">
+			<link rel="stylesheet" th:href="@{/libs/bootstrap/bootstrap.min.css}"/>
+			<link rel="stylesheet" href="assets/css/magnific-popup.css">
+<!--			<link rel="stylesheet" href="assets/css/bootsnav.css">-->
 
-				<div class="jumbotron">
-					<h1>天气查询</h1>
-					<p>为您带来更为方便，快捷，时效性的天气查询信息。并包含用户交流功能！！！快过来感受吧！！！</p>
-					<p><a class="btn btn-primary btn-lg" href="#" role="button">更多...</a></p>
+
+
+		<!--For Plugins external css-->
+		<!--<link rel="stylesheet" href="assets/css/plugins.css" />-->
+		<!--Theme custom css -->
+		<link rel="stylesheet" href="assets/css/style.css">
+
+		<!--Theme Responsive css-->
+		<link rel="stylesheet" href="assets/css/responsive.css" />
+
+		<script src="assets/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+	</head>
+	<body>
+	<header id="header">
+
+		<div th:replace="home/fragments/navbar :: navbar"></div>
+
+	</header>
+<div class="culmn">
+	<!--Home Sections-->
+
+	<section id="home" class="home">
+		<div class="container">
+			<div class="row">
+				<div class="main_home">
+					<div class="col-md-6">
+						<div class="home_text">
+							<h1 class="text-white">获取最有趣的天气应用</h1>
+						</div>
+
+						<div class="home_btns m-top-40">
+							<a href="/more" target="_blank" class="btn btn-danger m-top-20">查看更多</a>
+							<a href="#features" class="btn btn-primary m-top-20">特点</a>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="phone_one phone_attr1 text-center sm-m-top-50">
+							<div class="attr_deg"><span th:text="${reportModel.report.wendu}"></span>&deg;</div>
+							<div class="attr_rio text-uppercase"><span th:text="${reportModel.report.yesterday.fl}"></span></div>
+							<div class="attr_sun text-uppercase text-white"><span th:text="${reportModel.report.yesterday.date}"></span></div>
+							<div class="attr_lon text-uppercase text-white"><span th:text="${reportModel.city}"></span></div>
+							<img src="assets/images/phone01.png" alt="" />
+						</div>
+					</div>
+
 				</div>
-				<div class="row">
-					<div class="col-sm-6 col-md-4">
-						<div class="thumbnail">
-							<img src="/img/ex_1.jpg" alt="实时性、准确性">
-							<div class="caption">
-								<h3>提供实时天气信息</h3>
-								<p>供用户在线免费查看当地所在区域的天气信息，并且可以对当天天气进行评价交流！</p>
-								<p><a href="#" class="btn btn-primary" role="button">使用</a> <a href="#" class="btn btn-default" role="button">了解更多</a></p>
+				<div class="scrooldown">
+					<a href="#features"><i class="fa fa-chevron-down"></i></a>
+				</div>
+
+			</div><!--End off row-->
+		</div><!--End off container -->
+	</section> <!--End off Home Sections-->
+
+
+
+	<!--Featured Section-->
+	<section id="features" class="features">
+		<div class="container">
+			<div class="row">
+				<div class="main_features p-top-100">
+					<div class="col-md-8 col-md-offset-2 col-sm-12 col-xs-12">
+						<div class="head_title text-center">
+							<h2>完善的功能</h2>
+							<h5>只有必要</h5>
+						</div>
+					</div>
+
+					<div class="col-md-4">
+						<div class="features_item sm-m-top-30">
+							<div class="f_item_icon">
+								<i class="icon icon-diamond6"></i>
+							</div>
+							<div class="f_item_text">
+								<h3>可用性</h3>
+								<p>有时最简单的东西最难找到。所以我们为日常生活创造了一条新线</p>
 							</div>
 						</div>
 					</div>
-					<div class="col-sm-6 col-md-4">
-						<div class="thumbnail">
-							<img src="/img/ex_2.jpg" alt="稳定、可靠">
-							<div class="caption">
-								<h3>天气API更新</h3>
-								<p>这个功能供为天气管理人员发布新天气，需要按规范文档使用，即做到天气的实时更新，为用户提供更为准确的天气信息服务。</p>
-								<p><a href="#" class="btn btn-primary" role="button">使用</a> <a href="#" class="btn btn-default" role="button">了解更多</a></p>
+					<div class="col-md-4">
+						<div class="features_item sm-m-top-30">
+							<div class="f_item_icon">
+								<i class="icon icon-layers2"></i>
 							</div>
+							<div class="f_item_text">
+								<h3>视差效果</h3>
+								<p>有时最简单的东西最难找到。所以我们为日常生活创造了一条新线</p>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="features_item sm-m-top-30">
+							<div class="f_item_icon">
+								<i class="icon icon-business-32"></i>
+							</div>
+							<div class="f_item_text">
+								<h3>无限颜色</h3>
+								<p>有时最简单的东西最难找到。所以我们为日常生活创造了一条新线</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div><!-- End off row -->
+		</div><!-- End off container -->
+	</section><!-- End off Featured Section-->
+
+
+
+	<section>
+		<div class="container">
+			<div class="row">
+				<div class="main_drag roomy-50">
+					<div class="col-md-12">
+						<div class="swiper-container">
+							<div class="swiper-wrapper">
+								<div class="swiper-slide" style="background-image:url(assets/images/drag1.png)"></div>
+								<div class="swiper-slide" style="background-image:url(assets/images/drag3.png)"></div>
+								<div class="swiper-slide" style="background-image:url(assets/images/drag2.png)"></div>
+							</div>
+							<!-- If we need navigation buttons -->
+							<div class="swiper-button-prev"></div>
+							<div class="swiper-button-next"></div>
 						</div>
 					</div>
 				</div>
 			</div>
-			<div th:replace="home/fragments/sidebar :: sidebar"></div>
 		</div>
+	</section>
+	<!--screen short section-->
+
+	<section id="screen_area" class="screen_area">
+		<div class="container">
+			<div class="row">
+				<div class="main_screen">
+					<div class="col-md-8 col-md-offset-2 col-sm-12">
+						<div class="head_title text-center">
+							<h2>实时查询</h2>
+							<h5>最亮的图像</h5>
+						</div>
+					</div>
+
+					<!-- Screen01-->
+					<div class="screen01 roomy-50">
+						<div class="col-md-6">
+							<div class="screen01_img text-center">
+								<div class="attr_cloudy text-white">多云的</div>
+								<div class="attr_deg2 text-white"><span th:text="${reportModel.report.wendu}"></span> &deg;</div>
+								<img src="assets/images/screen01.png" alt="" />
+								<h1 class="cloudy">多云</h1>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="screen01_content m-top-100">
+								<div class="screen01_content_img ">
+									<img src="assets/images/cloud1.png" alt="" />
+								</div>
+								<h2 class="m-top-40">当多云时</h2>
+								<p class="m-top-20">关于空气湿度、天气感觉以及与朋友分享这些信息的可变信息</p>
+
+								<ul class="list-inline m-top-50">
+									<li class="text-center"><span th:text="${reportModel.report.yesterday.fl}"></span></span></li>
+									<li class="text-center"><span th:text="${reportModel.report.wendu}"></span> &deg; </li>
+									<li class="text-center"><span th:text="${reportModel.report.yesterday.type}"></li>
+								</ul>
+							</div>
+						</div>
+					</div><!--End off Screen01-->
+
+					<!-- Screen02-->
+					<div class="screen02 roomy-50 m-top-100">
+						<div class="col-md-6 col-md-push-6">
+							<div class="screen02_img text-center">
+								<div class="attr_sun2 text-white">阴天</div>
+								<div class="attr_deg3 text-white">25 &deg;</div>
+								<img src="assets/images/screen02.png" alt="" />
+								<h1 class="sunny">晴天</h1>
+							</div>
+						</div>
+						<div class="col-md-6 col-md-pull-6">
+							<div class="screen02_content m-top-100">
+								<div class="screen02_content_img ">
+									<img src="assets/images/sun1.png" alt="" />
+								</div>
+								<h2 class="m-top-40">当下雨时</h2>
+								<p class="m-top-20">关于空气湿度、天气感觉以及与朋友分享这些信息的可变信息</p>
+
+								<ul class="list-inline m-top-50">
+									<li class="text-center">95%</li>
+									<li class="text-center">9 &deg; </li>
+									<li class="text-center">雨天</li>
+								</ul>
+							</div>
+						</div>
+					</div><!--End off Screen02-->
+
+					<!-- Screen03-->
+					<div class="screen03 roomy-50 m-top-100">
+						<div class="col-md-6">
+							<div class="screen03_img text-center">
+								<div class="attr_rainy2 text-white">晴天</div>
+								<div class="attr_deg4 text-white">9 &deg;</div>
+								<img src="assets/images/screen03.png" alt="" />
+								<h1 class="rainy">晴</h1>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="screen03_content m-top-100">
+								<div class="screen03_content_img ">
+									<img src="assets/images/rainy1.png" alt="" />
+								</div>
+								<h2 class="m-top-40">当下雨时</h2>
+								<p class="m-top-20">有时最简单的东西最难找到。所以我们为日常生活创造了一条新线</p>
+
+								<ul class="list-inline m-top-50">
+									<li class="text-center">95%</li>
+									<li class="text-center">9 &deg; </li>
+									<li class="text-center">雨</li>
+								</ul>
+							</div>
+						</div>
+					</div><!--End off Screen02-->
+
+
+				</div>
+			</div><!--End off row-->
+		</div><!--End off container-->
+	</section><!--End off Screen01 Area Section -->
+
+
+
+	<!--People Section-->
+	<section id="reviews" class="reviews m-top-100">
+		<div class="container">
+			<div class="row">
+				<div class="main_reviews">
+					<div class="col-md-8 col-md-offset-2 col-sm-12">
+						<div class="head_title text-center">
+							<h2>评论在说什么</h2>
+							<h5>查看</h5>
+						</div>
+					</div>
+
+					<div class="reviews_content">
+						<div class="col-md-6">
+							<div class="reviews_item m-top-40">
+								<div class="reviews_item_icon pull-left">“</div>
+								<h3>艺术提供的是空间——为精神提供一定的呼吸空间。 </h3>
+								<h5>约翰厄普代克</h5>
+								<div class="reviews_item_icon1 pull-right text-right">“</div>
+							</div>
+						</div><!-- End off col-md-6 -->
+						<div class="col-md-6">
+							<div class="reviews_item m-top-40">
+								<div class="reviews_item_icon pull-left">“</div>
+								<h3>我们不是用眼睛看自然，而是用我们的理解和心灵。</h3>
+								<h5>威廉·黑兹利特</h5>
+								<div class="reviews_item_icon1 pull-right text-right">“</div>
+							</div>
+						</div><!-- End off col-md-6 -->
+						<div class="col-md-6">
+							<div class="reviews_item m-top-40">
+								<div class="reviews_item_icon pull-left">“</div>
+								<h3>唯一重要的勇气是那种让你从一个时刻到下一个时刻的勇气。</h3>
+								<h5>米农麦克劳克林</h5>
+								<div class="reviews_item_icon1 pull-right text-right">“</div>
+							</div>
+						</div><!-- End off col-md-6 -->
+						<div class="col-md-6">
+							<div class="reviews_item m-top-40">
+								<div class="reviews_item_icon pull-left">“</div>
+								<h3>没有人有足够好的记忆力成为一个成功的骗子。</h3>
+								<h5>亚伯拉罕·林肯</h5>
+								<div class="reviews_item_icon1 pull-right text-right">“</div>
+							</div>
+						</div><!-- End off col-md-6 -->
+					</div>
+				</div><!-- End off Main People -->
+			</div><!-- End off row -->
+		</div><!-- End off container -->
+	</section><!-- End off People Section-->
+
+
+	<!--App Download Section-->
+	<section id="download" class="download m-top-100">
+		<div class="download_overlay"></div>
+		<div class="container">
+			<div class="row">
+				<div class="main_download ">
+					<div class="col-md-6">
+						<div class="download_item roomy-100">
+							<h2 class="text-white">如何使用网站？</h2>
+							<h5 class="text-white m-top-20">简单，美观且用户友好的天气应用程序。只有相关和有用的信息。</h5>
+
+							<div class="download_app m-top-30">
+								<div class="btn-group" role="group" aria-label="...">
+									<button type="button" class="btn btn-default" href="/secure/report/cityName/beijing">
+										<a href="/secure/report/cityName/beijing">天气查询</a></button>
+									<button type="button" class="btn btn-default" href="/secure/report/cityName/beijing">
+										<a href="/apiindex">天气api文档</a></button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="download_item m-top-70">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- scroll up-->
+	<div class="scrollup">
+		<a href="#"><i class="fa fa-chevron-up"></i></a>
+	</div><!-- End off scroll up -->
+
+
+
+</div>
+
 		<div th:replace="home/fragments/footer :: footer"></div>
 		<div class="return_top"><a class=" fa fa-arrow-up"></a></div>
 	</body>
-	<script>
-		$(function () {
-			var pageUrl = '[[${pageUrl}]]';
-			var $pagination = $("#pagination");
-			if ($pagination) {
-				$pagination.pagination({
-					currentPage: [[${page.current}]],
-					totalPage: [[${page.pages}]],
-					callback: function (pageNo) {
-						window.location.href = (ctx + pageUrl + '/' +  pageNo).replace('//', '/');
-					}
-				});
-			}
-		})
-	</script>
 
+<!-- JS includes -->
+
+<script src="assets/js/vendor/jquery-1.11.2.min.js"></script>
+<script src="assets/js/vendor/bootstrap.min.js"></script>
+<script src="assets/js/jquery.magnific-popup.js"></script>
+<script src="assets/js/jquery.easing.1.3.js"></script>
+<script src="assets/js/swiper.min.js"></script>
+<script src="assets/js/jquery.collapse.js"></script>
+<script src="assets/js/bootsnav.js"></script>
+<script src="assets/js/plugins.js"></script>
+<script src="assets/js/main.js"></script>
 </html>

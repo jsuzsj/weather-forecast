@@ -1,0 +1,450 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:replace="home/fragments/header :: header"></div>
+<head >
+    <meta charset="UTF-8"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <title>老卫的天气预报（waylau.com）</title>
+</head>
+<body>
+<header id="header" style="position: relative;">
+    <div th:replace="home/fragments/navbar :: navbar"></div>
+</header>
+<div  style="position: relative;display: flex;">
+<div class="container-left" style="width: 50%;">
+    <div class="row">
+        <h3 th:text="${reportModel.title}">waylau</h3>
+        <div id="app">
+            <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="162px">
+            <el-form-item label="天气查询" prop="province">
+            <el-select v-model="dataForm.province" placeholder="请选择" @change="changeProvince">
+                <el-option
+                        v-for="item in options"
+                        :key="item.province"
+                        :label="item.province"
+                        :value="item.province">
+                </el-option>
+            </el-select>
+            <!--        <el-input v-model="dataForm.province" placeholder="所属市"></el-input>-->
+            <el-select v-model="dataForm.cityname" placeholder="请选择" @change="updateCounty">
+                <el-option
+                        v-for="item in options1"
+                        :key="item"
+                        :label="item"
+                        :value="item">
+                </el-option>
+            </el-select>
+<el-select v-model="dataForm.county" placeholder="请选择" @change="changeCounty">
+        <el-option
+          v-for="item in options2"
+          :key="item.county"
+          :label="item.county"
+          :value="item">
+        </el-option>
+      </el-select>
+        </el-form-item>
+            </el-form>
+        </div>
+<!--        <select class="custom-select" id="selectCityId">-->
+<!--            <option th:each="city : ${reportModel.cityList}"-->
+<!--                    th:value="${city.cityid}" th:text="${city.county} == '城区' ?${city.cityname}:${city.county}"-->
+<!--                    th:selected="${city.cityid eq reportModel.cityid or city.citycode eq reportModel.cityname}">-->
+
+<!--            </option>-->
+<!--        </select>-->
+    </div>
+    <div class="row">
+        <!--/*@thymesVar id="report" type="com.earthchen.spring.cloud.weather.vo2.Weather"*/-->
+        <!--/*@thymesVar id="report" type="com"*/-->
+        <h1 class="text-success" th:text="${reportModel.city}">深圳</h1>
+    </div>
+    <div class="row">
+        <p>
+            相比与昨天<span th:text="${reportModel.report.yesterday.date}"></span> 天气
+            <span th:text="${reportModel.report.yesterday.type}"></span>
+        </p>
+    </div>
+    <div class="row">
+        <p>
+            风力等级：<span th:text="${reportModel.report.yesterday.fl}"></span>
+        </p>
+    </div>
+    <div class="row">
+        <p>
+            当前温度：<span th:text="${reportModel.report.wendu}"></span>
+        </p>
+    </div>
+    <div class="row">
+        <p>
+            最高温度：<span th:text="${reportModel.report.yesterday.high}"></span>
+            最地温度：<span th:text="${reportModel.report.yesterday.low}"></span>
+        </p>
+    </div>
+    <div class="row">
+        <p>
+            风向：<span th:text="${reportModel.report.yesterday.fx}"></span>
+        </p>
+    </div>
+</div>
+    <div class="container-right" style="width: 50%;">
+        <ul class="nav nav-tabs">
+            <li role="presentation"><a value="1"  th:href="'/secure/report/cityId/' + ${cityid}">预报</a></li>
+            <li role="presentation"  class="active"><a value="2"  th:href="'/secure/report/comment/' + ${cityid}">评论</a></li>
+            <li role="presentation"><a value="3"  th:href="'/secure/report/expert/' + ${cityid}">专家说</a></li>
+        </ul>
+        <div class="contain">
+
+            <div  id="comment" class="comment comment-main">
+                <div class="comment-title">发表评论</div>
+                <form id="comment-form" class="form-horizontal mt-10">
+                    <input id="articleId" name="sid" type="hidden" th:value="${cityid}">
+                    <div id="" class="">欢迎您：<span id="user-name" th:text="${loginUser.nickname}"></span></div>
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <textarea name="content" id="comment-textarea"></textarea>
+                        </div>
+                    </div>
+                    <div><button style="margin: 0px 82%;" id="submitCommentBtn" type="button" class="btn btn-pri">发表评论</button></div>
+                </form>
+                <hr class="hr0 mt-15"/>
+                <ul id="comment-ul" class="comment">
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="home/fragments/footer :: footer"></div>
+
+<script type="text/javascript" th:src="@{/js/weather/report.js}"></script>
+
+<script th:inline="javascript">var ctx = [[@{/}]];</script>
+<script th:src="@{/js/jquery.min.js}"></script>
+<script th:src="@{/libs/bootstrap/bootstrap.min.js}"></script>
+<script th:src="@{/libs/markdown/highlight.min.js}"></script>
+<script th:src="@{/libs/markdown/simplemde.min.js}"></script>
+<script th:src="@{/libs/layer/layer.js}"></script>
+<script th:src="@{/libs/theme/pblog/js/tagcloud.js}"></script>
+<script th:src="@{/js/hc-sticky.js}"></script>
+<script th:src="@{/js/core.js}"></script>
+<script th:src="@{/libs/theme/pblog/js/pb-blog.js}"></script>
+<script>
+    var sid=[[${cityid}]];
+</script>
+<script th:inline="javascript">
+    $(function () {
+        var pblogNickName=Core.getCookie("pb-cms-username");
+        var pblogQQ=Core.getCookie("pb-cms-qq");
+        var pblogEmail=Core.getCookie("pb-cms-email");
+        if(pblogNickName!=""){
+        }else{
+            $("#user-info").show();
+        }
+        var simplemde = new SimpleMDE({
+            element: document.getElementById("comment-textarea"),
+            toolbar: [],
+            autoDownloadFontAwesome: false,
+            placeholder: "你的评论可以一针见血",
+            renderingConfig: {
+                codeSyntaxHighlighting: true
+            },
+            tabSize: 4,
+            status:false
+        });
+        $("#qq").blur(function(){
+            var qq=$("#qq").val();
+            var nickname=$("#nickname").val();
+            if(nickname.length==0&&qq.length > 0){
+                if(!isNaN(qq)){
+                    Core.getQqInfo(qq,function (data) {
+                        $("#nickname").val(data.nickname);
+                    });
+                }else{
+                    layer.msg("qq格式不正确！")
+                }
+            }
+        });
+
+        function init(pageNumber) {
+            var data = [[${commentList}]]
+            var commentOne="";
+            console.log(data.length)
+            if(data.length==0){
+                commentOne+='<div class="no-comment">暂无评论，快来占领宝座</div>';
+                $("#comment-ul").append(commentOne);
+            }else{
+                $.each(data,function (index,value) {
+                    let jdata = JSON.parse(value.jdata)
+                    console.log(value.user)
+                    console.log(value)
+                    console.log(value.praisecount)
+                    commentOne +=
+                        '<li>'+
+                        '	<div class="comment-body" id="comment-'+value.messageid+'">'+
+                        '		<div class="comment-user-img">'+
+                        '			<img src="'+(jdata.avatar||"/img/user-default.png")+'" onerror="this.src=\'/img/user-default.png\'" />'+
+                        '		</div>'+
+                        '		<div class="comment-info">'+
+                        '			<div class="comment-top">'+
+                        '				<span class="comment-nickname">'+
+                        '					<a href="javascript:void(0)">'+value.user.nickname+'</a>'+
+                        '				</span>'+
+                        '				<span class="comment-time">'+ value.user.createtime +
+                        '				</span>'+
+                        '			</div>'+
+                        '           <div class="comment-content">';
+                     if(value.parent!=null){
+                         let pjdata = JSON.parse(value.parent.jdata)
+                         commentOne +=
+                             '<div class="comment-parent">'+
+                             '				<div class="comment-parent-user"><a class="comment-link" data-link="comment-'+value.parent.id+'">@'+value.parent.uid+'</a></div>'+
+                             '				<div class="comment-parent-content">'+pjdata.content+'</div>'+
+                             '			</div> ';
+                     }
+
+                    commentOne +=jdata.content+
+                        '			</div>'+
+                        '			<div class="comment-footer">'+
+                        '				<span class="reply mr-5" reply-id="'+value.messageid+'">回复</span>'+
+                        '				<span class="cancel-reply mr-5" style="display: none;">取消回复</span>'+
+                        '				<span class="comment-support pointer fa fa-thumbs-o-up" biz-praisecount = "'+value.praisecount+'" biz-id="'+value.messageid+'">'+ value.praisecount +'</span>'+
+                        '			</div>'+
+                        '		</div>'+
+                        '	</div> '+
+                        '</li>';
+                })
+                $("#comment-more").remove();
+                if(data.hasNextPage){
+                    commentOne+='<div id="comment-more" data-page="'+data.nextPage+'" class="comment-more">加载更多</div>'
+                }
+                $("#comment-ul").append(commentOne);
+                /*加载更多*/
+                $("#comment-more").click(function () {
+                    init($(this).attr("data-page"));
+                })
+                /*link至评论*/
+                $(".comment-link").click(function () {
+                    var commentLinkId = $(this).attr("data-link");
+                    $("html,body").animate({
+                        scrollTop:$("#"+commentLinkId).offset().top-55},{duration: 300,easing: "swing"})
+                })
+
+                $(".reply").click(function () {
+                    var replyId=$(this).attr("reply-id");
+                    if($("#reply-comment-form").length>0){
+                        $replyForm=$("#reply-comment-form");
+                        $("#reply-comment-form").remove();
+                        $(this).parent().after($replyForm);
+                        $("#reply-comment-form").show();
+                        $(".reply[style='display: none;']").next().hide();
+                        $(".reply[style='display: none;']").show();
+                        $("#replyId").val(replyId);
+                    }else{
+                        var replyForm =
+                            '<form id="reply-comment-form" class="form-horizontal mt-10">'+
+                            '   <input name="sid" type="hidden" value="'+sid+'"  />'+
+                            '   <input id="replyId" name="pid" type="hidden" value="'+replyId+'"  />'+
+                            '   <div class="form-group">'+
+                            '       <div class="col-xs-12">'+
+                            '           <textarea name="content" id="reply-comment-textarea"></textarea>'+
+                            '       </div>'+
+                            '   </div>'+
+                            '   <div>'+
+                            '   <button id="submitReplyCommentBtn" type="button" class="btn btn-primary">发表评论</button>'+
+                            '   </div>'+
+                            '</form>'
+                        $(this).parent().after(replyForm);
+                        var replySimplemde = new SimpleMDE({
+                            element: document.getElementById("reply-comment-textarea"),
+                            toolbar: [],
+                            autoDownloadFontAwesome: false,
+                            placeholder: "说点什么好呢",
+                            renderingConfig: {
+                                codeSyntaxHighlighting: true
+                            },
+                            tabSize: 4,
+                            status:false
+                        });
+
+                    }
+                    $(this).hide();
+                    $(this).next().show();
+                    $("#submitReplyCommentBtn").on('click',function () {
+                        if($("#reply-nickname").val()==""){
+                            layer.msg("请输入昵称")
+                            return;
+                        }else if(replySimplemde.value()==""){
+                            layer.msg("说点什么吧")
+                            return;
+                        }
+                        $("#reply-comment-textarea").val(replySimplemde.markdown(replySimplemde.value()));
+                        Core.postAjax("/comment/send",$("#reply-comment-form").serialize(),function (data) {
+                            if(Core.getCookie("pb-cms-username")==""){
+                                Core.setCookie("pb-cms-username",$("#reply-nickname").val(),30);
+                                Core.setCookie("pb-cms-qq",$("#reply-qq").val(),30);
+                                Core.setCookie("pb-cms-email",$("#reply-email").val(),30);
+                            }
+                            layer.msg(data.msg, {
+                                offset: '30%',
+                                time: 800
+                            }, function () {
+                                location.reload();
+                            });
+                        })
+                    })
+                })
+                $(".cancel-reply").click(function () {
+                    $("#reply-comment-form").hide();
+                    $(this).hide();
+                    $(this).prev().show();
+                })
+
+                $(".comment-support").click(function () {
+                    $thisLove = $(this);
+                    Core.postAjax("/comment/praise",{"messageid":$(this).attr("biz-id"),"praisecount":$(this).attr("biz-praisecount")},function (data) {
+                        console.log(data)
+                        if(data.code == 200){
+                            $thisLove.text(parseInt($thisLove.text())+1);
+                        }
+                        layer.msg(data.msg)
+                    });
+                })
+            }
+        }
+        init();
+
+        /*提交评论*/
+        $("#submitCommentBtn").click(function () {
+            if($("#nickname").val()==""){
+                layer.msg("请输入昵称")
+                return;
+            }else if(simplemde.value()==""){
+                layer.msg("说点什么吧")
+                return;
+            }
+            $("#comment-textarea").val(simplemde.markdown(simplemde.value()));
+            Core.postAjax("/comment/send",$("#comment-form").serialize(),function (data) {
+                layer.msg(data.msg, {
+                    offset: '30%',
+                    time: 800
+                }, function () {
+                        location.reload();
+                });
+            })
+        })
+        /*点击用户名*/
+        $("#user-name").click(function () {
+            if($("#user-info").hasClass("user-show")){
+                $("#user-info").slideUp();
+                $("#user-info").removeClass("user-show");
+            }else{
+                $("#user-info").slideDown();
+                $("#user-info").addClass("user-show");
+            }
+
+        })
+    })
+
+
+</script>
+<script th:src="@{/libs/eleui/index.js}"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data() {
+            return {
+                visible: false,
+                dataForm: {
+                    cityname: '',
+                    citycode: '',
+                    province: '',
+                    cityid: 0,
+                    county: ''
+                },
+                dataRule: {
+                    cityname: [
+                        {required: true, message: '城市名称不能为空', trigger: 'blur'}
+                    ],
+                    citycode: [
+                        {required: true, message: '城市拼音不能为空', trigger: 'blur'}
+                    ],
+                    province: [
+                        {required: true, message: '所属市不能为空', trigger: 'blur'}
+                    ],
+                    county: [
+                        {required: true, message: '不能为空', trigger: 'blur'}
+                    ]
+                },
+                options: [],
+                options1: [],
+                options2: [],
+                value: ''
+            }
+        },
+        mounted: function () {
+            this.init()
+        }
+        ,
+        methods: {
+            init(id) {
+                console.log('testInit')
+                // 获取省列表
+                axios({
+                    url: '/city/provinceList',
+                    method: 'get',
+                    params: {}
+                }).then(({data}) => {
+                    this.options = data
+                })
+            },
+            updateSelect() {
+                // 获取市级别列表
+                axios({
+                    url: '/city/cityList',
+                    method: 'get',
+                    params: {'provincename': this.dataForm.province}
+                }).then(({data}) => {
+                    this.dataForm.cityname = data[0];
+                    this.options1 = data
+                    // 获取县级别列表
+                    this.updateCounty();
+                })
+            },
+            updateCounty() {
+                // 获取县级别列表
+                axios({
+                    url: '/city/countyList',
+                    method: 'get',
+                    params: {'cityname': this.dataForm.cityname}
+                }).then(({data}) => {
+                    this.dataForm.county = data[0].county;
+                    this.options2 = data
+                })
+            },
+            changeProvince(value) {
+                console.log(value)
+                this.dataForm.province = value;
+                this.updateSelect();
+            },
+            changeCity(value) {
+                console.log(value)
+                this.dataForm.cityname = value;
+                this.updateSelect();
+            },
+            changeCounty(value){
+                console.log(value)
+                this.dataForm.cityid = value.cityid;
+                this.dataForm.county = value.county;
+                this.$forceUpdate()
+                this.dataFormSubmit()
+            },
+            // 表单提交
+            dataFormSubmit () {
+                console.log(this.dataForm.cityid)
+                location.href = "/secure/report/cityId/"+this.dataForm.cityid;
+            }
+        }
+    })
+</script>
+</body>
+</html>

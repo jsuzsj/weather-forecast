@@ -1,16 +1,21 @@
 package com.earthchen.spring.cloud.weather.controller;
 
+import com.earthchen.spring.cloud.weather.mapper.CityMapper;
+import com.earthchen.spring.cloud.weather.mapper.MessageMapper;
 import com.earthchen.spring.cloud.weather.mapper.UserMapper;
+import com.earthchen.spring.cloud.weather.service.CityDataService;
+import com.earthchen.spring.cloud.weather.service.WeatherDataService;
+import com.earthchen.spring.cloud.weather.service.WeatherReportService;
 import com.earthchen.spring.cloud.weather.util.R;
 import com.earthchen.spring.cloud.weather.util.StringUtil;
+import com.earthchen.spring.cloud.weather.vo2.City;
+import com.earthchen.spring.cloud.weather.vo2.DetailMessage;
 import com.earthchen.spring.cloud.weather.vo2.User;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import com.wf.captcha.ArithmeticCaptcha;
 import lombok.RequiredArgsConstructor;
@@ -22,12 +27,12 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -35,19 +40,165 @@ import java.util.regex.Pattern;
 public class IndexController extends BaseController {
 
     @Autowired
+    private WeatherDataService weatherDataService;
+    @Autowired
+    private WeatherReportService weatherReportService;
+
+    @Autowired
+    private CityDataService cityDataService;
+
+    @Autowired
+    private CityMapper cityMapper;
+    @Autowired
+    private MessageMapper messageMapper;
+    @Autowired
     private  UserMapper userService;
     /**
      * 主页
      */
-    @GetMapping({"", "/index"})
-    public String index(Model model) {
+    @GetMapping({"/", "/index"})
+    public ModelAndView index(@PathVariable(value = "cityname",required = false)String cityName, Model model) throws Exception {
         User user = getLoginUser();
         if (user == null) {
-            return "redirect:login";
+            return new ModelAndView("login", "reportModel", model);
+//            return "redirect:login";
         }
         // 登录用户信息
         model.addAttribute("loginUser", getLoginUser());
-        return "theme/pblog/index";
+        String cityId = null;
+        String cityN = null;
+        String chieseN = null;
+        if(cityName==null){
+            cityN = "beijing";
+            cityId = "101010100";
+            chieseN = "北京";
+        }else
+        if (!Character.isDigit(cityName.charAt(0))) {
+            cityN = cityName;
+            List<City> cityList = cityDataService.listCity();
+            for (City c : cityList) {
+                if (c.getCitycode().equals(cityName)) {
+                    cityId = c.getCityid().toString();
+                    chieseN = c.getCounty();
+                    if(chieseN.equals("城区")){
+                        chieseN = c.getCityname();
+                    }
+                    break;
+                }
+            }
+            if (cityId == null) {
+                throw new RuntimeException("这个cityName不存在");
+            }
+        }else{
+            List<City> cityList = cityDataService.listCity();
+            for (City c : cityList) {
+                if (c.getCityid().toString().equals(cityName)) {
+                    cityN = c.getCitycode();
+                    chieseN = c.getCounty();
+                    if(chieseN.equals("城区")){
+                        chieseN = c.getCityname();
+                    }
+                    break;
+                }
+            }
+            if (cityN == null) {
+                throw new RuntimeException("这个cityId不存在");
+            }
+            cityId = cityName;
+        }
+        model.addAttribute("title", "实时的天气预报");
+        model.addAttribute("loginUser", getLoginUser());
+        model.addAttribute("cityid", cityId);
+        model.addAttribute("cityname", cityN);
+        model.addAttribute("city", chieseN);
+        model.addAttribute("cityList", cityDataService.listCity());
+        model.addAttribute("report",weatherReportService.getDataByCityId(cityId));
+        List<DetailMessage> messages = messageMapper.selectByCityId(cityId);
+        model.addAttribute("commentList", messages);
+        return new ModelAndView("theme/pblog/index", "reportModel", model);
+    }
+
+    /**
+     * 主页
+     */
+    @GetMapping( "/more")
+    public ModelAndView more(@PathVariable(value = "cityname",required = false)String cityName, Model model) throws Exception {
+        User user = getLoginUser();
+        if (user == null) {
+            return new ModelAndView("login", "reportModel", model);
+//            return "redirect:login";
+        }
+        // 登录用户信息
+        model.addAttribute("loginUser", getLoginUser());
+        String cityId = null;
+        String cityN = null;
+        String chieseN = null;
+        if(cityName==null){
+            cityN = "beijing";
+            cityId = "101010100";
+            chieseN = "北京";
+        }else
+        if (!Character.isDigit(cityName.charAt(0))) {
+            cityN = cityName;
+            List<City> cityList = cityDataService.listCity();
+            for (City c : cityList) {
+                if (c.getCitycode().equals(cityName)) {
+                    cityId = c.getCityid().toString();
+                    chieseN = c.getCounty();
+                    if(chieseN.equals("城区")){
+                        chieseN = c.getCityname();
+                    }
+                    break;
+                }
+            }
+            if (cityId == null) {
+                throw new RuntimeException("这个cityName不存在");
+            }
+        }else{
+            List<City> cityList = cityDataService.listCity();
+            for (City c : cityList) {
+                if (c.getCityid().toString().equals(cityName)) {
+                    cityN = c.getCitycode();
+                    chieseN = c.getCounty();
+                    if(chieseN.equals("城区")){
+                        chieseN = c.getCityname();
+                    }
+                    break;
+                }
+            }
+            if (cityN == null) {
+                throw new RuntimeException("这个cityId不存在");
+            }
+            cityId = cityName;
+        }
+        model.addAttribute("title", "实时的天气预报");
+        model.addAttribute("loginUser", getLoginUser());
+        model.addAttribute("cityid", cityId);
+        model.addAttribute("cityname", cityN);
+        model.addAttribute("city", chieseN);
+        model.addAttribute("cityList", cityDataService.listCity());
+        model.addAttribute("report",weatherReportService.getDataByCityId(cityId));
+        List<DetailMessage> messages = messageMapper.selectByCityId(cityId);
+        model.addAttribute("commentList", messages);
+        return new ModelAndView("theme/pblog/more", "reportModel", model);
+    }
+
+    /**
+     * 主页
+     */
+    @GetMapping({"", "/apiindex"})
+    public ModelAndView apiindex(Model model) throws Exception {
+        User user = getLoginUser();
+        if (user == null) {
+            return new ModelAndView("login", "reportModel", model);
+//            return "redirect:login";
+        }
+        // 登录用户信息
+        model.addAttribute("loginUser", getLoginUser());
+
+        model.addAttribute("title", "实时的天气预报");
+        model.addAttribute("loginUser", getLoginUser());
+        return new ModelAndView("theme/pblog/apiindex", "reportModel", model);
     }
 
     /**

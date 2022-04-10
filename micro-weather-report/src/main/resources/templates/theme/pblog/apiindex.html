@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<div th:replace="home/fragments/header :: header"></div>
+	<body>
+		<header id="header">
+			<div th:replace="home/fragments/navbar :: navbar"></div>
+		</header>
+		<div class="pb-container pb-content">
+			<div class="pb-main">
+
+				<div class="jumbotron">
+					<h1>天气API更新</h1>
+					<p>这个功能供为天气管理人员发布新天气，需要按规范文档使用，即做到天气的实时更新，为用户提供更为准确的天气信息服务。</p>>
+					<p>供用户在线免费查看当地所在区域的天气信息，并且可以对当天天气进行评价交流！</p>
+					<p>为您带来更为方便，快捷，时效性的天气查询信息。并包含用户交流功能！！！快过来感受吧！！！</p>
+					<p><a class="btn btn-primary btn-lg" href="#" role="button">更多...</a></p>
+				</div>
+				<div class="row">
+					<div class="col-sm-6 col-md-4">
+						<div class="thumbnail">
+							<img src="/img/ex_1.jpg" alt="实时性、准确性">
+							<div class="caption">
+								<h3>提供实时天气信息API</h3>
+								<p>提供获取本站天气信息api！</p>
+								<p><a href="#" class="btn btn-primary document1" role="button">查看文档</a></p>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-6 col-md-4">
+						<div class="thumbnail">
+							<img src="/img/ex_2.jpg" alt="稳定、可靠">
+							<div class="caption">
+								<h3>天气信息更新API</h3>
+								<p>为管理员提供更新天气信息接口，适用于第三方公司的天气信息提供录入接口。</p>
+								<p><a href="#" class="btn btn-primary document2" role="button">查看文档</a></p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div th:replace="home/fragments/sidebar :: sidebar"></div>
+		</div>
+
+
+		<div th:replace="home/fragments/footer :: footer"></div>
+		<div class="return_top"><a class=" fa fa-arrow-up"></a></div>
+	</body>
+
+<!-- JS includes -->
+
+<script src="assets/js/vendor/jquery-1.11.2.min.js"></script>
+<script src="assets/js/vendor/bootstrap.min.js"></script>
+<script src="assets/js/jquery.magnific-popup.js"></script>
+<script src="assets/js/jquery.easing.1.3.js"></script>
+<script src="assets/js/swiper.min.js"></script>
+<script src="assets/js/jquery.collapse.js"></script>
+<script src="assets/js/bootsnav.js"></script>
+<script src="assets/js/plugins.js"></script>
+<script src="assets/js/main.js"></script>
+<script>
+	function document1(){
+		$.ajax({
+			url: "/md/1.md",
+			cache: false,
+			async: false,
+			data: {},
+			type: "GET",
+			contentType: 'text/html; charset=UTF-8',
+			success: function (data) {
+				$('.pb-main').empty().html(
+						marked.parse(data)
+				)
+			},
+			error: function (XMLHttpRequest, textStatus, errorThrown) {
+				if (XMLHttpRequest.status == 403) {
+					layer.msg("您没有权限访问，请联系管理员！")
+				} else if (XMLHttpRequest.status == 500) {
+					layer.msg("服务器内部错误！")
+				} else if (XMLHttpRequest.status == 404) {
+					layer.msg("您访问的内容不存在！")
+				} else {
+					layer.msg("服务器未知错误！")
+				}
+			}
+		});
+	}
+	function document2(){
+		$.ajax({
+			url: "/md/2.md",
+			cache: false,
+			async: false,
+			data: {},
+			type: "GET",
+			contentType: 'text/html; charset=UTF-8',
+			success: function (data) {
+				$('.pb-main').empty().html(
+						marked.parse(data)
+				)
+			},
+			error: function (XMLHttpRequest, textStatus, errorThrown) {
+				if (XMLHttpRequest.status == 403) {
+					layer.msg("您没有权限访问，请联系管理员！")
+				} else if (XMLHttpRequest.status == 500) {
+					layer.msg("服务器内部错误！")
+				} else if (XMLHttpRequest.status == 404) {
+					layer.msg("您访问的内容不存在！")
+				} else {
+					layer.msg("服务器未知错误！")
+				}
+			}
+		});
+	}
+	$(".document1").click(function (){
+		document1();
+	})
+	$(".document2").click(function (){
+		document2();
+	})
+</script>
+</html>
