@@ -15,8 +15,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+import java.util.LinkedList;
 
-import java.util.List;
+import java.util.*;
 
 
 /**
@@ -89,7 +90,23 @@ public class WeatherReportController extends  BaseController{
         model.addAttribute("city",city);
         model.addAttribute("cityname", cityName);
         model.addAttribute("cityid", cityId);
-        model.addAttribute("cityList",cityMapper.selectAll());
+        final List<City> cities = cityMapper.selectAll();
+        List<City> cities2 = new ArrayList<>();
+        Set<String> provinces = new HashSet<>();
+        for(City c : cities){
+            if(c.getCounty().equals("城区")&&!provinces.contains(c.getProvince())){
+                provinces.add(c.getProvince());
+                cities2.add(c);
+            }
+        }
+        model.addAttribute("cityList",cities2);
+        List<City> tentop = cityMapper.selectTenTop();
+        for(City c : tentop){
+            if(c.getCounty().equals("城区")){
+                c.setCounty(c.getCityname());
+            }
+        }
+        model.addAttribute("tentop",tentop);
         model.addAttribute("report", weatherReportService.getDataByCityId(cityId));
         return new ModelAndView("weather/report", "reportModel", model);
     }

@@ -14,7 +14,11 @@
 
 
 <div  style="position: relative;display: flex;">
-<div class="container-left" style="width: 50%;">
+<div class="container-left" style="width: 50%; display: flex">
+    <div class="flex1" style="width: 41%;">
+        <div th:replace="home/fragments/sidebar :: sidebar"></div>
+    </div>
+    <div class="flex2" style="width: 37%;">
     <div class="row">
         <h3 th:text="${reportModel.title}">waylau</h3>
         <div id="app">
@@ -88,10 +92,11 @@
             风向：<span th:text="${reportModel.report.yesterday.fx}"></span>
         </p>
     </div>
+    </div>
 </div>
 <div class="container-right" style="width: 50%;">
     <ul class="nav nav-tabs">
-        <li role="presentation" class="active"><a value="1"  th:href="'/secure/report/cityId/' + ${cityid}">预报</a></li>
+        <li role="presentation" class="active"><a value="1"  th:href="'/secure/report/cityName/' + ${cityid}">预报</a></li>
         <li role="presentation"><a value="2"  th:href="'/secure/report/comment/' + ${cityid}">评论</a></li>
         <li role="presentation"><a value="3"  th:href="'/secure/report/expert/' + ${cityid}">专家说</a></li>
     </ul>
@@ -119,6 +124,11 @@
 <script type="text/javascript" th:src="@{/js/weather/report.js}"></script>
 <!--<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>-->
 <script th:src="@{/libs/eleui/index.js}"></script>
+<script type="text/css">
+    .pb-sidebar{
+        width: auto ;
+    }
+</script>
 <script>
     new Vue({
         el: '#app',
@@ -217,5 +227,7 @@
         }
     })
 </script>
+
+<script th:src="@{/libs/theme/pblog/js/pb-blog.js}"></script>
 </body>
 </html>

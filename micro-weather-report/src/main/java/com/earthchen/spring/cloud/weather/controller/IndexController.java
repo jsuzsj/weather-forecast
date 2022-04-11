@@ -186,7 +186,7 @@ public class IndexController extends BaseController {
     /**
      * 主页
      */
-    @GetMapping({"", "/apiindex"})
+    @GetMapping( "/apiindex")
     public ModelAndView apiindex(Model model) throws Exception {
         User user = getLoginUser();
         if (user == null) {

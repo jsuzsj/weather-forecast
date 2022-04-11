@@ -69,16 +69,16 @@ $(document).ready(function () {
         });
     }
 
-    var Sticky = new hcSticky('.pb-sidebar', {
-        stickTo: '.pb-main',
-        followScroll: false,
-        queries: {
-            768: {
-                disable: true,
-                stickTo: 'body'
-            }
-        }
-    });
+    // var Sticky = new hcSticky('.pb-sidebar', {
+    //     stickTo: '.pb-main',
+    //     followScroll: false,
+    //     queries: {
+    //         768: {
+    //             disable: true,
+    //             stickTo: 'body'
+    //         }
+    //     }
+    // });
     /*回到顶部点击函数*/
     $('.return_top').click(function () {
         $("html,body").animate({scrollTop: 0}, "fast");
@@ -88,7 +88,7 @@ $(document).ready(function () {
     tagcloud({
         selector: "#tagcloud",  //元素选择器
         fontsize: 15,       //基本字体大小, 单位px
-        radius: 50,         //滚动半径, 单位px
+        radius: 60,         //滚动半径, 单位px
         mspeed: "normal",   //滚动最大速度, 取值: slow, normal(默认), fast
         ispeed: "normal",   //滚动初速度, 取值: slow, normal(默认), fast
         direction: 135,     //初始滚动方向, 取值角度(顺时针360): 0对应top, 90对应left, 135对应right-bottom(默认)...

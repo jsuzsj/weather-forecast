@@ -41,15 +41,15 @@ public class CityDataServiceImpl implements CityDataService {
         ValueOperations<String, String> ops = stringRedisTemplate.opsForValue();
         ObjectMapper mapper = new ObjectMapper();
         List<City> mp = new ArrayList<>();
-        if (stringRedisTemplate.hasKey("cityList")) {
-            try {
-                String jsonString = ops.get("cityList");
-                mp=mapper.readValue(jsonString,new TypeReference<List<City>>(){});
-                return mp ;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+//        if (stringRedisTemplate.hasKey("cityList")) {
+//            try {
+//                String jsonString = ops.get("cityList");
+//                mp=mapper.readValue(jsonString,new TypeReference<List<City>>(){});
+//                return mp ;
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
         mp = cityMapper.selectAll();
         try {
             String strjosn = mapper.writeValueAsString(mp);

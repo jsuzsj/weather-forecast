@@ -1,22 +1,22 @@
 spring:
   redis:
     password: 123456
-    host: 192.168.0.100
+    host: 192.168.0.101
     port: 6379
     shiro:
       password: 123456
-      host: 192.168.0.100
+      host: 192.168.0.101
       port: 6379
       timeout: 0
   datasource:
     username: root
     password: 123456
-    url: jdbc:mysql://localhost:3307/weather?characterEncoding=UTF-8
+    url: jdbc:mysql://localhost:3306/weather?characterEncoding=UTF-8
     driver-class-name: com.mysql.jdbc.Driver
     shiro:
       username: root
       password: 123456
-      url: jdbc:mysql://localhost:3307/weather?characterEncoding=UTF-8
+      url: jdbc:mysql://localhost:3306/weather?characterEncoding=UTF-8
       driver-class-name: com.mysql.jdbc.Driver
   thymeleaf:
     cache: false
