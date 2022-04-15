@@ -87,6 +87,6 @@
     from forecast
     where cityid = #{cityid,jdbcType=INTEGER}
     order by createTime desc
-    limit 7,1
+    limit 1
   </select>
 </mapper>

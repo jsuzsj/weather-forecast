@@ -13,7 +13,7 @@
     </div>
     <div class="tag panel panel-default" style="height: 200px">
         <div class="panel-heading">
-            <h3 class="panel-title">直辖市天气推荐</h3>
+            <h3 class="panel-title">省会城市天气推荐</h3>
         </div>
         <div class="panel-body" id="tagcloud" style="overflow: hidden">
             <a class="btn btn-default btn-xs" th:each="item:${cityList}" th:href="@{${'/secure/report/cityName/'+item.cityid}}" th:text="${item.province}"></a>
